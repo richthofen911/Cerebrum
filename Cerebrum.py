@@ -82,7 +82,6 @@ def shoot_cmd(cmd_target):
     response_list = []
     global target_loaded
     for machine_name in target_loaded:
-        # request_list.append(urllib2.Request(target_loaded[machine_name]))
         url_prefix = "http://"
         response = urllib2.urlopen(urllib2.Request(url_prefix + target_loaded[machine_name] + '/cmd/' + cmd_target))
         response_list.append(response.read())
@@ -97,6 +96,7 @@ def init_target_list():
         targets_file_operation = open(targets_file, 'a+')
         content = targets_file_operation.read()
         if not content:
+            # python only reads json array, and it needs to be converted to dict for further use
             json.dump([{'default': 'empty'}], targets_file_operation)
     except IOError:
         print 'targets_file open error'
@@ -110,9 +110,7 @@ def load_local_json():
     global target_all
     try:
         targets_file_operation = open(targets_file, 'a+')
-        target_tmp = json.load(targets_file_operation)
-        target_tmp = list(target_tmp)
-        target_all = target_tmp[0]
+        target_all = list(json.load(targets_file_operation))[0]  # converted to list and get elem[0] as a dict
         if 'default' in target_all.keys():
             del target_all["default"]
     except IOError:
