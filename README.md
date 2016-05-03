@@ -1,2 +1,3 @@
 # Cerebrum
-Distribute one command to multiple target computers
+Control my Raspberry Pis from a center computer
+
