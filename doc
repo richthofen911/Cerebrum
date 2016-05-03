@@ -1,0 +1,28 @@
+Use MQTT
+
+Client (Pi) auto start on bootup
+  topic_to_sub: 'center_command'
+  topic_to_pub: 'node_status'
+  
+  on_connect:
+    publish i'm online to Center 
+  
+  on_message:
+    if msg == disconnect
+      publish i'm offline' to Center
+    else 
+      exec command
+      
+  
+  
+
+Center
+  topic_to_sub: 'node_status'
+  topic_to_pub: 'center_command'
+  
+  if command == some management cmd, such as 'show nodes'
+    do local work
+  elif command == need to run on the nodes
+    publish to nodes
+    
+  
